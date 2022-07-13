@@ -1,5 +1,5 @@
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
-  async function getFee() {
+  async function getFees() {
     let response = await fetch('https://www.etherchain.org/api/gasPriceOracle');
     return response.text();
   }
