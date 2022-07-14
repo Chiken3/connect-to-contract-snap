@@ -5,16 +5,23 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
   }
   switch (requestObject.method) {
     case 'hello':
-      const fees = await getFees();
+      const fees1 = await getFees();
+      const fees = JSON.parse(await getFees());
+      const baseFee = parseFloat(fees.currentBaseFee); 
+      const safeLow = Math.ceil(baseFee + parseFloat(fees.safeLow)); 
+      const standard = Math.ceil(baseFee + parseFloat(fees.standard)); 
+      const fastest = Math.ceil(baseFee + parseFloat(fees.fastest));
       return wallet.request({
         method: 'snap_confirm',
         params: [
           {
-            prompt: `Hello, ${originString}!`,
+            prompt: `Gas Fees`,
             description:
-              'This custom confirmation is just for display purposes.',
+              'Current Gas Fees from etherchain.org:',
             textAreaContent:
-              'Current fee estimates: ' +fees,
+              'Low: '+safeLow+"\n"+
+              'Average: '+standard+"\n"+
+              'High: '+fastest
           },
         ],
       });
